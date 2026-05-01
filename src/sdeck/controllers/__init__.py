@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from typing import Any
 
 from deckui import DuiCard
@@ -30,7 +31,7 @@ class BaseController(ABC):
 _REGISTRY: dict[str, type[BaseController]] = {}
 
 
-def register_controller(name: str):  # noqa: ANN201
+def register_controller(name: str) -> Callable[[type[BaseController]], type[BaseController]]:
     """Decorator to register a controller class by name."""
 
     def decorator(cls: type[BaseController]) -> type[BaseController]:

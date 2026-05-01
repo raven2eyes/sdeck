@@ -78,7 +78,7 @@ class Provisioner:
                 continue
             spec = load_package(str(template_path))
             key = DuiKey(spec)
-            screen.key(key_slot.slot).set_dui(key)
+            screen.set_key(key_slot.slot, key)
 
         # Apply touchscreen card templates with controllers
         for ts_slot in profile.templates.touchscreen:
@@ -88,7 +88,7 @@ class Provisioner:
                 continue
             spec = load_package(str(template_path))
             card = DuiCard(spec)
-            screen.touchscreen(ts_slot.slot).set_card(card)
+            screen.set_card(ts_slot.slot, card)
 
             # Wire controller if specified
             if ts_slot.controller:

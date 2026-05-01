@@ -54,7 +54,7 @@ async def run() -> None:
                 log.debug("Ignoring device %s (filter: %s)", serial, serial_filter)
                 return
 
-            log.info("Stream Deck connected: %s (model=%s)", serial, info.model)
+            log.info("Stream Deck connected: %s (type=%s)", serial, info.deck_type)
             await provisioner.provision(deck, serial)
 
         @manager.on_disconnect

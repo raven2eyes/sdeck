@@ -20,24 +20,19 @@ class TimerController(BaseController):
 
     async def setup(self) -> None:
         """Wire touch/encoder events to timer start/pause/cancel."""
+        timer = self.ha.timer(self.entity_name)
 
         @self.card.on("start")
         async def _start() -> None:
-            await self.ha.call_service(
-                "timer", "start", entity_id=f"timer.{self.entity_name}"
-            )
+            await timer.start()
 
         @self.card.on("pause")
         async def _pause() -> None:
-            await self.ha.call_service(
-                "timer", "pause", entity_id=f"timer.{self.entity_name}"
-            )
+            await timer.pause()
 
         @self.card.on("cancel")
         async def _cancel() -> None:
-            await self.ha.call_service(
-                "timer", "cancel", entity_id=f"timer.{self.entity_name}"
-            )
+            await timer.cancel()
 
         @self.card.on("adjust")
         async def _adjust() -> None:
