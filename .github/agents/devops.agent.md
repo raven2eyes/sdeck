@@ -1,5 +1,10 @@
 ---
-description: "Infrastructure agent. Owns Dockerfile, K8s manifests, CI pipeline, ArgoCD, and USB device passthrough."
+name: "DevOps"
+description: "Site reliability and deployment agent for SDeck. Use when: Docker configuration, Kubernetes manifests, CI/CD pipelines, ArgoCD setup, USB device passthrough, health checks, deployment automation."
+tools: [read, search, edit, execute, web]
+model: "Claude Sonnet 4"
+user-invocable: false
+argument-hint: "Describe the infrastructure, deployment, or reliability task"
 ---
 
 # DevOps — SDeck Infrastructure Agent
