@@ -1,0 +1,35 @@
+name: IconKey
+type: Key
+version: 1
+layout: layout.svg
+description: "A key that displays an Iconify icon with a label"
+author: raven2eyes
+license: MIT
+category: utilities
+device:
+  - stream-deck-plus
+
+bindings:
+  icon:
+    type: iconify
+    node: icon_group
+    size: 48
+    default: "mdi:help-circle-outline"
+  label:
+    type: text
+    node: label
+    default: ""
+    max_width: 110
+    overflow: ellipsis
+  active:
+    type: color
+    node: bg
+    attribute: fill
+    default: "#1a1a2e"
+
+events:
+  - name: press
+    source: key_press_release
+  - name: hold
+    source: key_hold
+    hold_ms: 800

@@ -1,0 +1,53 @@
+name: LightCard
+type: TouchStripCard
+version: 1
+layout: layout.svg
+description: "Light control card — brightness, color temp, toggle"
+author: raven2eyes
+license: MIT
+category: home-automation
+device:
+  - stream-deck-plus
+
+bindings:
+  state:
+    type: text
+    node: state_label
+    default: "off"
+  brightness:
+    type: range
+    node: brightness_bar
+    default: 0.0
+    direction: horizontal
+  brightness_pct:
+    type: text
+    node: brightness_text
+    default: "0%"
+  color_temp:
+    type: text
+    node: color_temp_text
+    default: ""
+  bulb_color:
+    type: color
+    node: bulb_icon
+    attribute: fill
+    default: "#555555"
+
+events:
+  - name: brightness_up
+    source: encoder_turn
+    direction: right
+  - name: brightness_down
+    source: encoder_turn
+    direction: left
+  - name: toggle
+    source: encoder_press_release
+
+regions:
+  touch_area:
+    x: 0
+    y: 0
+    width: 200
+    height: 100
+    events:
+      - tap

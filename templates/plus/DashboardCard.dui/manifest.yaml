@@ -1,0 +1,38 @@
+name: DashboardCard
+type: TouchStripCard
+version: 1
+layout: layout.svg
+description: "Dashboard card — displays connection status, time, and navigation"
+author: raven2eyes
+license: MIT
+category: system
+device:
+  - stream-deck-plus
+
+bindings:
+  connected:
+    type: visibility
+    node: connected_icon
+    default: false
+  disconnected:
+    type: visibility
+    node: disconnected_icon
+    default: true
+  time_text:
+    type: text
+    node: time_display
+    default: "--:--"
+  status_text:
+    type: text
+    node: status_label
+    default: "SDeck"
+    max_width: 130
+    overflow: ellipsis
+
+events:
+  - name: next_screen
+    source: encoder_turn
+    direction: right
+  - name: previous_screen
+    source: encoder_turn
+    direction: left

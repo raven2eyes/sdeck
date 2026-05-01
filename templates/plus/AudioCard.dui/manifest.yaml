@@ -1,0 +1,61 @@
+name: AudioCard
+type: TouchStripCard
+version: 1
+layout: layout.svg
+description: "Media player card — displays now-playing info with volume/transport controls"
+author: raven2eyes
+license: MIT
+category: media
+device:
+  - stream-deck-plus
+
+bindings:
+  title:
+    type: text
+    node: title
+    default: "No media"
+    max_width: 170
+    overflow: ellipsis
+  artist:
+    type: text
+    node: artist
+    default: ""
+    max_width: 170
+    overflow: ellipsis
+  state:
+    type: text
+    node: state_label
+    default: "idle"
+  volume:
+    type: range
+    node: volume_bar
+    default: 0.5
+    direction: horizontal
+  album_art:
+    type: image
+    node: album_art
+    fit: cover
+
+events:
+  - name: volume_up
+    source: encoder_turn
+    direction: right
+  - name: volume_down
+    source: encoder_turn
+    direction: left
+  - name: toggle_play_pause
+    source: encoder_press_release
+  - name: next_track
+    source: tap
+  - name: previous_track
+    source: long_press
+
+regions:
+  touch_area:
+    x: 0
+    y: 0
+    width: 200
+    height: 100
+    events:
+      - tap
+      - long_press

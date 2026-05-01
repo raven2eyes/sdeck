@@ -1,0 +1,53 @@
+name: TimerCard
+type: TouchStripCard
+version: 1
+layout: layout.svg
+description: "Timer card — start/pause/cancel with remaining time display"
+author: raven2eyes
+license: MIT
+category: productivity
+device:
+  - stream-deck-plus
+
+bindings:
+  state:
+    type: text
+    node: state_label
+    default: "idle"
+  remaining:
+    type: text
+    node: remaining_text
+    default: "00:00"
+  progress:
+    type: range
+    node: progress_bar
+    default: 0.0
+    direction: horizontal
+  state_color:
+    type: color
+    node: state_indicator
+    attribute: fill
+    default: "#555555"
+
+events:
+  - name: start
+    source: encoder_press_release
+  - name: pause
+    source: tap
+  - name: cancel
+    source: long_press
+  - name: adjust
+    source: encoder_turn
+    direction: right
+    accumulate: true
+    accumulate_delay: 0.3
+
+regions:
+  touch_area:
+    x: 0
+    y: 0
+    width: 200
+    height: 100
+    events:
+      - tap
+      - long_press
