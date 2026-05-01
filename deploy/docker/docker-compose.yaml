@@ -4,8 +4,12 @@ services:
       context: ../..
       dockerfile: deploy/docker/Dockerfile
     env_file: ../../.env
+    # USB passthrough — Linux only. On macOS Docker Desktop, USB devices
+    # are not forwarded into the Linux VM. Run natively on Mac instead:
+    #   uv run sdeck
     devices:
       - /dev/bus/usb:/dev/bus/usb
+    privileged: true  # required for HID access to Stream Deck
     volumes:
       - ../../profiles:/app/profiles:ro
       - ../../templates:/app/templates:ro
