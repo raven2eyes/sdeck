@@ -1,0 +1,49 @@
+name: Agent Task
+description: A task for an SDeck development agent
+title: "[Task]: "
+labels: ["agent-task"]
+body:
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Assigned Agent
+      description: Which agent should handle this?
+      options:
+        - Conductor
+        - Engineer
+        - DevOps
+        - Ralph
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Task Description
+      description: What needs to be done?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: How do we verify this is complete?
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Issues or tasks that must be completed first
+      placeholder: "Depends on #NNN"
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Relevant files, prior decisions, AGENT-MEMORY references

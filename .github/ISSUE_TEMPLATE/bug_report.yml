@@ -1,0 +1,65 @@
+name: Bug Report
+description: Report a bug in SDeck
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened?
+      placeholder: A clear and concise description of the bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this?
+      placeholder: |
+        1. Configure profile with ...
+        2. Run `uv run sdeck`
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should have happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Stream Deck Model
+      description: Which Stream Deck model? (plus, mini, neo, xl)
+      placeholder: "e.g., plus"
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Python version, OS, Docker/K8s, etc.
+      placeholder: |
+        - Python: 3.11
+        - OS: macOS 14 / Ubuntu 22.04
+        - Runtime: Docker Desktop / Talos K8s
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant log output (paste between the backticks)
+      render: shell

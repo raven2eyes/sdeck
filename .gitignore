@@ -1,12 +1,29 @@
 # SDeck
 .env
+.env.local
+.env.*.local
+
+# Python
 *.egg-info/
 dist/
 build/
 __pycache__/
+*.pyc
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/
 .coverage
 htmlcov/
+
+# IDE
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project
 sandbox/
