@@ -1,4 +1,4 @@
-FROM python:3.11-slim AS base
+FROM python:3.14-slim AS base
 
 # System deps for USB/HID access (StreamDeck) and SVG rendering
 RUN apt-get update && \
