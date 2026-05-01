@@ -13,10 +13,10 @@ Docker Desktop for PoC (MacBook USB), Talos K8s for production.
 
 | Agent     | Prompt                                    | Scope                          |
 |-----------|-------------------------------------------|--------------------------------|
-| Conductor | `.github/prompts/conductor.agent.md`      | Sequencing, backlog, checklist |
-| Ralph     | `.github/prompts/ralph.agent.md`          | QA, review, quality gates      |
-| Engineer  | `.github/prompts/engineer.agent.md`       | Python code, tests, templates  |
-| DevOps    | `.github/prompts/devops.agent.md`         | Docker, K8s, CI, ArgoCD       |
+| Conductor | `.github/agents/conductor.agent.md`       | Sequencing, backlog, checklist |
+| Ralph     | `.github/agents/ralph.agent.md`           | QA, review, quality gates      |
+| Engineer  | `.github/agents/engineer.agent.md`        | Python code, tests, templates  |
+| DevOps    | `.github/agents/devops.agent.md`          | Docker, K8s, CI, ArgoCD       |
 
 ## Decisions Log
 
