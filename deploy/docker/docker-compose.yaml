@@ -1,0 +1,12 @@
+services:
+  sdeck:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    env_file: ../../.env
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    volumes:
+      - ../../profiles:/app/profiles:ro
+      - ../../templates:/app/templates:ro
+    restart: unless-stopped

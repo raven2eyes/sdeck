@@ -1,0 +1,12 @@
+# SDeck
+.env
+*.egg-info/
+dist/
+build/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+sandbox/

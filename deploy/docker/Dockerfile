@@ -1,0 +1,30 @@
+FROM python:3.11-slim AS base
+
+# System deps for USB/HID access (StreamDeck) and SVG rendering
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        git \
+        libcairo2-dev \
+        libusb-1.0-0 \
+        libhidapi-dev \
+        libhidapi-libusb0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
+
+WORKDIR /app
+
+# Install dependencies first (cache-friendly)
+COPY pyproject.toml uv.lock .python-version ./
+RUN uv sync --frozen --no-dev --no-install-project
+
+# Copy application code
+COPY src/ src/
+COPY templates/ templates/
+COPY profiles/ profiles/
+
+# Install the project itself
+RUN uv sync --frozen --no-dev
+
+ENTRYPOINT ["uv", "run", "sdeck"]

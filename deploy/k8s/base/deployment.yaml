@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sdeck
+  labels:
+    app: sdeck
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sdeck
+  template:
+    metadata:
+      labels:
+        app: sdeck
+    spec:
+      containers:
+        - name: sdeck
+          image: ghcr.io/raven2eyes/sdeck:latest
+          envFrom:
+            - secretRef:
+                name: sdeck-ha-credentials
+            - configMapRef:
+                name: sdeck-config
+          resources:
+            limits:
+              # USB device resource provided by smarter-device-manager
+              smarter-devices/usb-hidraw0: "1"
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+          volumeMounts:
+            - name: profiles
+              mountPath: /app/profiles
+              readOnly: true
+      volumes:
+        - name: profiles
+          configMap:
+            name: sdeck-profiles

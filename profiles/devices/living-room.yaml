@@ -1,0 +1,11 @@
+# Living room Stream Deck +
+extends: defaults
+serial: CHANGE_ME_LIVING_ROOM
+
+templates:
+  touchscreen:
+    - slot: 1
+      template: LightCard.dui
+      controller: light
+      config:
+        entity: living_room_lights
