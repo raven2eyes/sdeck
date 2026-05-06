@@ -95,6 +95,20 @@ No configuration lives outside of profiles and templates.
 - Keep `AGENTS.md` current with architecture and setup instructions
 - Profile schema changes must be reflected in both code and example profiles
 
+### Code-to-Doc Mapping
+
+When code in these areas changes, the corresponding docs **must** be updated in the same PR:
+
+| Code change in | Must update |
+|---|---|
+| `src/sdeck/controllers/` | `AGENTS.md` (Architecture), `copilot-instructions.md` (Controllers section) |
+| `profiles/` | Example profiles in `profiles/`, `copilot-instructions.md` (Profiles section) |
+| `templates/` | `AGENTS.md` (Architecture), `README.md` |
+| `deploy/` | `AGENTS.md` (Setup/Running), `README.md` |
+| `.github/agents/` | `AGENTS.md` (Agent Team Table) |
+| `src/sdeck/profile.py` | `copilot-instructions.md` (Profile-Driven Configuration), example profiles |
+| `pyproject.toml` (deps) | `AGENTS.md` (Setup), `README.md` (Install) |
+
 ## Absolute Rules
 1. Never commit credentials (HA tokens, .env files)
 2. Never make blocking calls in async code paths

@@ -1,0 +1,604 @@
+title: SDeck Control
+views:
+  # ── Scenes Overview ─────────────────────────────────────
+  - title: Scenes
+    path: scenes
+    icon: mdi:view-carousel
+    badges: []
+    cards:
+      - type: markdown
+        content: |
+          ## Stream Deck Scene Manager
+          **Device:** Stream Deck + (WA5081LKVEE)
+
+          Each button navigates to the scene detail view with live controls.
+
+      - type: grid
+        title: ""
+        columns: 5
+        square: false
+        cards:
+          - type: button
+            name: Bedroom 2
+            icon: mdi:bed-outline
+            icon_height: 48px
+            tap_action:
+              action: navigate
+              navigation_path: /s-deck/bedroom-two
+          - type: button
+            name: Living Room
+            icon: mdi:sofa
+            icon_height: 48px
+            tap_action:
+              action: navigate
+              navigation_path: /s-deck/living-room
+          - type: button
+            name: Music
+            icon: mdi:music
+            icon_height: 48px
+            tap_action:
+              action: navigate
+              navigation_path: /s-deck/music
+          - type: button
+            name: Kitchen
+            icon: mdi:stove
+            icon_height: 48px
+            tap_action:
+              action: navigate
+              navigation_path: /s-deck/kitchen
+          - type: button
+            name: Bedroom 1
+            icon: mdi:bed
+            icon_height: 48px
+            tap_action:
+              action: navigate
+              navigation_path: /s-deck/bedroom-one
+
+  # ── Scene: Bedroom Two ─────────────────────────────────
+  - title: Bedroom Two
+    path: bedroom-two
+    icon: mdi:bed-outline
+    badges: []
+    cards:
+      # -- Touchscreen mirrors: Audio, Light, Timer --
+      - type: media-control
+        entity: media_player.bedroom_two
+
+      - type: horizontal-stack
+        cards:
+          - type: light
+            entity: light.bedroom_two_ceiling
+            name: Ceiling
+          - type: light
+            entity: light.bedroom_two
+            name: All Lights
+
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: timer.sdeck_bedroom_two
+            name: Timer
+          - type: markdown
+            content: |
+              # {{ now().strftime('%H:%M') }}
+              {{ now().strftime('%A, %d %B') }}
+
+      # -- Keys 0-7 --
+      - type: grid
+        title: "Stream Deck Keys"
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: "Bedroom 2"
+            icon: mdi:bed-outline
+            icon_height: 36px
+            tap_action:
+              action: navigate
+              navigation_path: /s-deck/scenes
+          - type: button
+            name: "Lyskaede"
+            icon: mdi:string-lights
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: switch.toggle
+              target:
+                entity_id: switch.lyskaede
+          - type: button
+            name: "Ceiling"
+            icon: mdi:ceiling-light
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.toggle
+              target:
+                entity_id: light.bedroom_two_ceiling
+          - type: button
+            name: "Sleep"
+            icon: mdi:power-sleep
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.turn_off
+              target:
+                entity_id: light.bedroom_two
+          - type: button
+            name: "John Mayer"
+            icon: mdi:music
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.bedroom_two
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/38"
+          - type: button
+            name: "Beyoncé"
+            icon: mdi:music
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.bedroom_two
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "SQ:0"
+          - type: button
+            name: "Blues"
+            icon: mdi:music
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.bedroom_two
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/36"
+          - type: button
+            name: "KVF Radio"
+            icon: mdi:radio
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.bedroom_two
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/24"
+
+  # ── Scene: Living Room ──────────────────────────────────
+  - title: Living Room
+    path: living-room
+    icon: mdi:sofa
+    badges: []
+    cards:
+      # -- Touchscreen mirrors: Audio, Light, Timer --
+      - type: media-control
+        entity: media_player.living_room
+
+      - type: horizontal-stack
+        cards:
+          - type: light
+            entity: light.living_room
+            name: Living Room
+          - type: light
+            entity: light.living_room_ceiling
+            name: Ceiling
+
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: timer.sdeck_living_room
+            name: Timer
+          - type: markdown
+            content: |
+              # {{ now().strftime('%H:%M') }}
+              {{ now().strftime('%A, %d %B') }}
+
+      # -- Keys 0-7 --
+      - type: grid
+        title: "Stream Deck Keys"
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: "Living Room"
+            icon: mdi:sofa
+            icon_height: 36px
+            tap_action:
+              action: navigate
+              navigation_path: /s-deck/scenes
+          - type: button
+            name: "All Lights"
+            icon: mdi:lightbulb-group
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.toggle
+              target:
+                entity_id: light.living_room
+          - type: button
+            name: "TV"
+            icon: mdi:television
+            icon_height: 36px
+            tap_action:
+              action: none
+          - type: button
+            name: "Goodnight"
+            icon: mdi:power-sleep
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.turn_off
+              target:
+                entity_id: light.living_room
+          - type: button
+            name: "Sonos"
+            icon: mdi:speaker
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.media_play_pause
+              target:
+                entity_id: media_player.living_room
+          - type: button
+            name: "Ceiling"
+            icon: mdi:ceiling-light
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.toggle
+              target:
+                entity_id: light.living_room_ceiling
+          - type: button
+            name: "Movie"
+            icon: mdi:movie-open
+            icon_height: 36px
+            tap_action:
+              action: none
+          - type: button
+            name: "Dashboard"
+            icon: mdi:view-dashboard
+            icon_height: 36px
+            tap_action:
+              action: navigate
+              navigation_path: /s-deck/scenes
+
+  # ── Scene: Living Room Music ────────────────────────────
+  - title: Music
+    path: music
+    icon: mdi:music
+    badges: []
+    cards:
+      # -- Touchscreen mirrors: Audio, Playlist Browser, Timer --
+      - type: media-control
+        entity: media_player.living_room
+
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: timer.sdeck_music
+            name: Timer
+          - type: markdown
+            content: |
+              # {{ now().strftime('%H:%M') }}
+              {{ now().strftime('%A, %d %B') }}
+
+      # -- Keys 1-7: All playlists --
+      - type: grid
+        title: "Playlists"
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: "John Mayer"
+            icon: mdi:account-music
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.living_room
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/38"
+          - type: button
+            name: "Beyoncé"
+            icon: mdi:music-circle
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.living_room
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "SQ:0"
+          - type: button
+            name: "Blues"
+            icon: mdi:guitar-acoustic
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.living_room
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/36"
+          - type: button
+            name: "70s Soul"
+            icon: mdi:music-note
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.living_room
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/33"
+          - type: button
+            name: "Feel Good Dinner"
+            icon: mdi:silverware-fork-knife
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.living_room
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/35"
+          - type: button
+            name: "Soft 70s"
+            icon: mdi:music-clef-treble
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.living_room
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/37"
+          - type: button
+            name: "DR P3"
+            icon: mdi:radio
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.living_room
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/27"
+
+  # ── Scene: Kitchen ──────────────────────────────────────
+  - title: Kitchen
+    path: kitchen
+    icon: mdi:stove
+    badges: []
+    cards:
+      # -- Touchscreen mirrors: Audio, Light, Timer --
+      - type: media-control
+        entity: media_player.living_room
+
+      - type: horizontal-stack
+        cards:
+          - type: light
+            entity: light.kitchen
+            name: All Lights
+          - type: light
+            entity: light.kitchen_ceiling
+            name: Ceiling
+          - type: light
+            entity: light.kitchen_counter
+            name: Counter
+
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: timer.sdeck_kitchen
+            name: Timer
+          - type: markdown
+            content: |
+              # {{ now().strftime('%H:%M') }}
+              {{ now().strftime('%A, %d %B') }}
+
+      # -- Keys 0-7 --
+      - type: grid
+        title: "Stream Deck Keys"
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: "Kitchen"
+            icon: mdi:stove
+            icon_height: 36px
+            tap_action:
+              action: navigate
+              navigation_path: /s-deck/scenes
+          - type: button
+            name: "All Lights"
+            icon: mdi:lightbulb-group
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.toggle
+              target:
+                entity_id: light.kitchen
+          - type: button
+            name: "Counter"
+            icon: mdi:countertop
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.toggle
+              target:
+                entity_id: light.kitchen_counter
+          - type: button
+            name: "Off"
+            icon: mdi:power-sleep
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.turn_off
+              target:
+                entity_id: light.kitchen
+          - type: button
+            name: "Bright"
+            icon: mdi:lightbulb
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.turn_on
+              target:
+                entity_id: light.kitchen
+          - type: button
+            name: "Ceiling"
+            icon: mdi:ceiling-light
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.toggle
+              target:
+                entity_id: light.kitchen_ceiling
+          - type: button
+            name: "Dim"
+            icon: mdi:weather-night
+            icon_height: 36px
+            tap_action:
+              action: none
+          - type: button
+            name: "Dashboard"
+            icon: mdi:view-dashboard
+            icon_height: 36px
+            tap_action:
+              action: navigate
+              navigation_path: /s-deck/scenes
+
+  # ── Scene: Bedroom One ──────────────────────────────────
+  - title: Bedroom One
+    path: bedroom-one
+    icon: mdi:bed
+    badges: []
+    cards:
+      # -- Touchscreen mirrors: Audio, Light, Timer --
+      - type: media-control
+        entity: media_player.bedroom_one
+
+      - type: horizontal-stack
+        cards:
+          - type: light
+            entity: light.bedroom_one
+            name: All Lights
+          - type: light
+            entity: light.bedroom_one_ceiling
+            name: Ceiling
+
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: timer.sdeck_bedroom_one
+            name: Timer
+          - type: markdown
+            content: |
+              # {{ now().strftime('%H:%M') }}
+              {{ now().strftime('%A, %d %B') }}
+
+      # -- Keys 0-7 --
+      - type: grid
+        title: "Stream Deck Keys"
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: "Bedroom 1"
+            icon: mdi:bed
+            icon_height: 36px
+            tap_action:
+              action: navigate
+              navigation_path: /s-deck/scenes
+          - type: button
+            name: "Ceiling"
+            icon: mdi:ceiling-light
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.toggle
+              target:
+                entity_id: light.bedroom_one_ceiling
+          - type: button
+            name: "Reading"
+            icon: mdi:book-open-variant
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.turn_on
+              target:
+                entity_id: light.bedroom_one
+          - type: button
+            name: "Sleep"
+            icon: mdi:power-sleep
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: light.turn_off
+              target:
+                entity_id: light.bedroom_one
+          - type: button
+            name: "John Mayer"
+            icon: mdi:music
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.bedroom_one
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/38"
+          - type: button
+            name: "Beyoncé"
+            icon: mdi:music
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.bedroom_one
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "SQ:0"
+          - type: button
+            name: "Blues"
+            icon: mdi:music
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.bedroom_one
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/36"
+          - type: button
+            name: "KVF Radio"
+            icon: mdi:radio
+            icon_height: 36px
+            tap_action:
+              action: perform-action
+              perform_action: media_player.play_media
+              target:
+                entity_id: media_player.bedroom_one
+              data:
+                media_content_type: favorite_item_id
+                media_content_id: "FV:2/24"

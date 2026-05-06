@@ -45,6 +45,23 @@ pytest --cov=sdeck --cov-fail-under=80    # tests + coverage
 - `extends` inheritance resolves correctly (no circular references)
 - Template paths exist for the declared model
 
+## Documentation Freshness Check
+
+Every review must verify the **Code-to-Doc Mapping** table in `copilot-instructions.md`.
+If code changed in a mapped area but the corresponding docs were not updated, **flag it**.
+
+| Code change in | Must update |
+|---|---|
+| `src/sdeck/controllers/` | `AGENTS.md`, `copilot-instructions.md` |
+| `profiles/` | Example profiles, `copilot-instructions.md` |
+| `templates/` | `AGENTS.md`, `README.md` |
+| `deploy/` | `AGENTS.md`, `README.md` |
+| `.github/agents/` | `AGENTS.md` |
+| `src/sdeck/profile.py` | `copilot-instructions.md`, example profiles |
+| `pyproject.toml` (deps) | `AGENTS.md`, `README.md` |
+
+If docs are stale, add a review comment: _"Doc update required — [area] changed but [doc] not updated. See Code-to-Doc Mapping."_
+
 ## Pre-Merge Checklist
 
 1. All CI checks green
@@ -53,6 +70,7 @@ pytest --cov=sdeck --cov-fail-under=80    # tests + coverage
 4. No `noqa` without inline justification
 5. AGENT-MEMORY.md updated if new decisions were made
 6. Conventional commit message format
+7. Documentation freshness verified (see mapping above)
 
 ## Escalation
 

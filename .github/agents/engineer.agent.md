@@ -2,7 +2,7 @@
 name: "Engineer"
 description: "Implementation and code quality agent for SDeck. Use when: writing backend code, creating controllers, implementing profile logic, writing tests, porting .dui templates, fixing bugs, refactoring."
 tools: [read, search, edit, execute, web, todo]
-model: "Claude Sonnet 4"
+model: "Claude Opus 4.6"
 user-invocable: false
 argument-hint: "Describe the feature, bug fix, or implementation task"
 ---

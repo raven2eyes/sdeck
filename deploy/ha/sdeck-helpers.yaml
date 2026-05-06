@@ -1,0 +1,61 @@
+# SDeck Home Assistant Helpers & Automations
+# Copy these into your HA configuration.yaml (or split into packages)
+#
+# Requires: SDeck REST API running on port 8484
+
+# ── Input Select: Scene picker per device ──────────────────
+input_select:
+  sdeck_scene_wa5081lkvee:
+    name: "Stream Deck + Scene"
+    icon: mdi:controller
+    options:
+      - bedroom-two
+      - living-room
+      - living-room-music
+      - kitchen
+      - bedroom-one
+
+# ── REST Commands: Call SDeck API ──────────────────────────
+rest_command:
+  sdeck_switch_scene:
+    url: "http://localhost:8484/api/decks/{{ serial }}/scene"
+    method: POST
+    content_type: "application/json"
+    payload: '{"scene": "{{ scene }}"}'
+
+# ── Automations ───────────────────────────────────────────
+automation:
+  - id: sdeck_scene_switch_wa5081lkvee
+    alias: "SDeck: Switch Scene (WA5081LKVEE)"
+    description: "Switch Stream Deck scene when input_select changes"
+    trigger:
+      - platform: state
+        entity_id: input_select.sdeck_scene_wa5081lkvee
+    action:
+      - service: rest_command.sdeck_switch_scene
+        data:
+          serial: "WA5081LKVEE"
+          scene: "{{ states('input_select.sdeck_scene_wa5081lkvee') }}"
+
+  - id: sdeck_sync_scene_from_device
+    alias: "SDeck: Sync Scene from Device"
+    description: "Poll SDeck API and sync input_select (runs every 5s)"
+    trigger:
+      - platform: time_pattern
+        seconds: "/5"
+    action:
+      - service: rest
+        data:
+          url: "http://localhost:8484/api/decks"
+          method: GET
+        response_variable: decks_response
+      - condition: template
+        value_template: "{{ decks_response.status == 200 }}"
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.sdeck_scene_wa5081lkvee
+        data:
+          option: >-
+            {% set decks = decks_response.content | from_json %}
+            {% set deck = decks | selectattr('serial', 'eq', 'WA5081LKVEE') | first %}
+            {{ deck.active_scene }}
