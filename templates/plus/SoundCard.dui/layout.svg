@@ -1,0 +1,68 @@
+<svg id="SoundCard" xmlns="http://www.w3.org/2000/svg" width="197" height="98" font-family="ArialMT,Arial,sans-serif">
+    <style>
+        .background_color {color: #1c1c1c;}
+        .text_color {color: #dedede;}
+        .dim_color {color: #555555;}
+        .bass_color {color: #4caf50;}
+        .treble_color {color: #7c4dff;}
+        .sound_color {color: #4caf50;}
+    </style>
+    <rect id="background" class="background_color" x="0" y="0" width="197" height="98" fill="currentColor"/>
+
+    <!-- Bass gauge (left half) -->
+    <g transform="translate(49 52)">
+        <!-- Arc track (background) -->
+        <path class="dim_color" d="M -38 0 A 38 38 0 0 1 38 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+        <!-- Arc colored overlay -->
+        <path class="bass_color" d="M -38 0 A 38 38 0 0 1 38 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" opacity="0.3"/>
+        <!-- Center tick (0 position) -->
+        <line class="text_color" x1="0" y1="-42" x2="0" y2="-34" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Left tick (-10) -->
+        <line class="dim_color" x1="-38" y1="4" x2="-38" y2="-4" stroke="currentColor" stroke-width="1"/>
+        <!-- Right tick (+10) -->
+        <line class="dim_color" x1="38" y1="4" x2="38" y2="-4" stroke="currentColor" stroke-width="1"/>
+        <!-- -5 tick left -->
+        <line class="dim_color" x1="-27" y1="-25" x2="-23" y2="-21" stroke="currentColor" stroke-width="1"/>
+        <!-- +5 tick right -->
+        <line class="dim_color" x1="27" y1="-25" x2="23" y2="-21" stroke="currentColor" stroke-width="1"/>
+    </g>
+    <!-- Bass indicator (DeckUI sets x and y for arc movement) -->
+    <rect id="bass_indicator" class="bass_color" x="46" y="11" width="6" height="6" rx="3" ry="3" fill="currentColor" stroke="#111" stroke-width="1"/>
+    <!-- Bass label and value -->
+    <text class="text_color" x="49" y="68" font-size="10" fill="currentColor" text-anchor="middle">BASS</text>
+    <text id="bass_value_text" class="bass_color" x="49" y="82" font-size="16" font-weight="bold" fill="currentColor" text-anchor="middle">0</text>
+    <!-- Sound icon (hidden toggle nodes) -->
+    <g transform="translate(93 3)">
+        <path id="sound_off" class="dim_color" transform="scale(.28 .28)" fill="currentColor" d="M30 6.5L18 14H6v12h12l12 7.5V6.5zM44 20c0-4.97-2.69-9.3-6.69-11.63l-2.25 3.9C37.56 13.77 39 16.72 39 20s-1.44 6.23-3.94 7.73l2.25 3.9C41.31 29.3 44 24.97 44 20zM6 17v6h5l7 4.5v-15L11 17H6" />
+        <path id="sound_on" class="sound_color" transform="scale(.28 .28)" fill="currentColor" d="M30 6.5L18 14H6v12h12l12 7.5V6.5zM37.31 8.37l-2.25 3.9C37.56 13.77 39 16.72 39 20s-1.44 6.23-3.94 7.73l2.25 3.9C41.31 29.3 44 24.97 44 20c0-4.97-2.69-9.3-6.69-11.63zM33 20c0-2.28-1.19-4.28-3-5.4v10.8c1.81-1.12 3-3.12 3-5.4z" />
+    </g>
+
+    <!-- Treble gauge (right half) -->
+    <g transform="translate(148 52)">
+        <!-- Arc track (background) -->
+        <path class="dim_color" d="M -38 0 A 38 38 0 0 1 38 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+        <!-- Arc colored overlay -->
+        <path class="treble_color" d="M -38 0 A 38 38 0 0 1 38 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" opacity="0.3"/>
+        <!-- Center tick (0 position) -->
+        <line class="text_color" x1="0" y1="-42" x2="0" y2="-34" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Left tick (-10) -->
+        <line class="dim_color" x1="-38" y1="4" x2="-38" y2="-4" stroke="currentColor" stroke-width="1"/>
+        <!-- Right tick (+10) -->
+        <line class="dim_color" x1="38" y1="4" x2="38" y2="-4" stroke="currentColor" stroke-width="1"/>
+        <!-- -5 tick left -->
+        <line class="dim_color" x1="-27" y1="-25" x2="-23" y2="-21" stroke="currentColor" stroke-width="1"/>
+        <!-- +5 tick right -->
+        <line class="dim_color" x1="27" y1="-25" x2="23" y2="-21" stroke="currentColor" stroke-width="1"/>
+    </g>
+    <!-- Treble indicator (DeckUI sets x and y for arc movement) -->
+    <rect id="treble_indicator" class="treble_color" x="145" y="11" width="6" height="6" rx="3" ry="3" fill="currentColor" stroke="#111" stroke-width="1"/>
+    <!-- Treble label and value -->
+    <text class="text_color" x="148" y="68" font-size="10" fill="currentColor" text-anchor="middle">TREBLE</text>
+    <text id="treble_value_text" class="treble_color" x="148" y="82" font-size="16" font-weight="bold" fill="currentColor" text-anchor="middle">0</text>
+
+    <!-- Min/max labels -->
+    <text class="dim_color" x="11" y="94" font-size="8" fill="currentColor" text-anchor="middle">-10</text>
+    <text class="dim_color" x="87" y="94" font-size="8" fill="currentColor" text-anchor="middle">+10</text>
+    <text class="dim_color" x="110" y="94" font-size="8" fill="currentColor" text-anchor="middle">-10</text>
+    <text class="dim_color" x="186" y="94" font-size="8" fill="currentColor" text-anchor="middle">+10</text>
+</svg>

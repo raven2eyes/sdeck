@@ -1,0 +1,95 @@
+name: SoundCard
+type: TouchStripCard
+version: 1
+description: Bass and treble EQ controller with gauge indicators
+author: raven2eyes
+license: Apache-2.0
+category: home-automation
+layout: layout.svg
+
+bindings:
+  sound:
+    type: toggle
+    node_on: sound_on
+    node_off: sound_off
+    default: true
+
+  bass_value_text:
+    type: text
+    node: bass_value_text
+    default: "0"
+
+  bass:
+    type: slider
+    node: bass_indicator
+    default: 0.5
+    direction: horizontal
+    min_pos: 8
+    max_pos: 84
+
+  bass_y:
+    type: slider
+    node: bass_indicator
+    default: 0.0
+    direction: vertical
+    min_pos: 11
+    max_pos: 49
+
+  treble_value_text:
+    type: text
+    node: treble_value_text
+    default: "0"
+
+  treble:
+    type: slider
+    node: treble_indicator
+    default: 0.5
+    direction: horizontal
+    min_pos: 107
+    max_pos: 183
+
+  treble_y:
+    type: slider
+    node: treble_indicator
+    default: 0.0
+    direction: vertical
+    min_pos: 11
+    max_pos: 49
+
+events:
+  - name: toggle
+    source: encoder_press_release
+
+  - name: bass_up
+    source: encoder_turn
+    direction: right
+    accumulate: true
+    accumulate_delay: 0.1
+
+  - name: bass_down
+    source: encoder_turn
+    direction: left
+    accumulate: true
+    accumulate_delay: 0.1
+
+  - name: treble_up
+    source: encoder_press_turn
+    direction: right
+    accumulate: true
+    accumulate_delay: 0.1
+    accumulate_max_steps: 10
+
+  - name: treble_down
+    source: encoder_press_turn
+    direction: left
+    accumulate: true
+    accumulate_delay: 0.1
+    accumulate_max_steps: 10
+
+regions:
+  card:
+    x: 0
+    y: 0
+    width: 197
+    height: 98
+    events: [tap, long_press]
