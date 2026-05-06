@@ -108,6 +108,8 @@ async def test_provision_wires_controllers(
 
     # Mock HA and its domain accessors
     ha = MagicMock()
+    ha.state = MagicMock()
+    ha.state.refresh_all = AsyncMock()
     player = MagicMock()
     player.volume_up = AsyncMock()
     player.toggle = AsyncMock()
@@ -141,7 +143,7 @@ async def test_provision_wires_controllers(
     assert result is not None
     assert result.serial == "TEST_SERIAL"
     assert len(result.controllers) == 1
-    deck.set_screen.assert_awaited_once_with("main")
+    deck.set_screen.assert_awaited_once_with("defaults")
 
 
 @patch("sdeck.provisioner.load_package")
@@ -172,6 +174,8 @@ async def test_provision_applies_key_templates(
     (key_dui / "manifest.yaml").write_text("name: IconKey\nversion: '1.0'\n")
 
     ha = MagicMock()
+    ha.state = MagicMock()
+    ha.state.refresh_all = AsyncMock()
     key_instance = MagicMock()
     mock_dui_key.return_value = key_instance
     mock_load_package.return_value = MagicMock()
@@ -203,6 +207,8 @@ async def test_provision_skips_missing_template(
     shutil.rmtree(audio_dui)
 
     ha = MagicMock()
+    ha.state = MagicMock()
+    ha.state.refresh_all = AsyncMock()
     provisioner = Provisioner(
         profiles_dir=profiles_dir,
         templates_dir=templates_dir.parent,
@@ -272,3 +278,268 @@ async def test_sync_all_decks(setup_dirs: tuple[Path, Path]) -> None:
 
     await provisioner.sync_all_decks()
     mock_ctrl.sync_state.assert_awaited_once()
+
+
+@patch("sdeck.provisioner.load_package")
+@patch("sdeck.provisioner.DuiCard")
+async def test_multi_scene_provision(
+    mock_dui_card: MagicMock,
+    mock_load_package: MagicMock,
+    setup_dirs: tuple[Path, Path],
+) -> None:
+    """Multiple profiles are provisioned as switchable scenes."""
+    profiles_dir, templates_dir = setup_dirs
+
+    # Add device profiles so we get 2 scenes
+    devices_dir = profiles_dir / "devices"
+    devices_dir.mkdir()
+    device_profile = {
+        "extends": "defaults",
+        "serial": "SCENE_SERIAL",
+        "scenes": ["living-room"],
+        "templates": {
+            "keys": [],
+            "touchscreen": [
+                {
+                    "slot": 0,
+                    "template": "AudioCard.dui",
+                    "controller": "audio",
+                    "config": {"media_player": "bedroom"},
+                }
+            ],
+        },
+    }
+    (devices_dir / "bedroom-one.yaml").write_text(yaml.dump(device_profile))
+
+    other_profile = {
+        "extends": "defaults",
+        "serial": "OTHER_SERIAL",
+        "templates": {
+            "keys": [],
+            "touchscreen": [
+                {
+                    "slot": 0,
+                    "template": "AudioCard.dui",
+                    "controller": "audio",
+                    "config": {"media_player": "living_room"},
+                }
+            ],
+        },
+    }
+    (devices_dir / "living-room.yaml").write_text(yaml.dump(other_profile))
+
+    ha = MagicMock()
+    ha.state = MagicMock()
+    ha.state.refresh_all = AsyncMock()
+    player = MagicMock()
+    player.set_volume = AsyncMock()
+    player.play_pause = AsyncMock()
+    player.next = AsyncMock()
+    player.previous = AsyncMock()
+    player.volume_level = 0.5
+    player.state = "playing"
+    player.attributes = {"media_title": "", "media_artist": ""}
+    player.on_state_change = MagicMock()
+    ha.media_player = MagicMock(return_value=player)
+
+    card_instance = MagicMock()
+    card_instance.on = MagicMock(side_effect=lambda name: lambda fn: fn)
+    card_instance.set = MagicMock()
+    mock_dui_card.return_value = card_instance
+    mock_load_package.return_value = MagicMock()
+
+    provisioner = Provisioner(
+        profiles_dir=profiles_dir,
+        templates_dir=templates_dir.parent,
+        ha=ha,
+    )
+
+    # Mock screen that returns a key with on_event
+    mock_key = MagicMock()
+    mock_key.on_event = MagicMock(side_effect=lambda name: lambda fn: fn)
+
+    screen = MagicMock()
+    screen.set_card = MagicMock()
+    screen.key = MagicMock(return_value=mock_key)
+
+    deck = MagicMock()
+    deck.screen = MagicMock(return_value=screen)
+    deck.set_screen = AsyncMock()
+
+    result = await provisioner.provision(deck, "SCENE_SERIAL")
+
+    assert result is not None
+    # Two scenes: bedroom (primary) + living-room (from scenes list)
+    assert deck.screen.call_count == 2
+    screen_names = [c.args[0] for c in deck.screen.call_args_list]
+    assert "bedroom-one" in screen_names
+    assert "living-room" in screen_names
+    # Primary scene activated
+    deck.set_screen.assert_awaited_once_with("bedroom-one")
+    # Key 0 on_event wired for scene cycling
+    mock_key.on_event.assert_called()
+
+
+@patch("sdeck.provisioner.load_package")
+@patch("sdeck.provisioner.DuiKey")
+async def test_key_light_state_sync(
+    mock_dui_key: MagicMock,
+    mock_load_package: MagicMock,
+    tmp_path: Path,
+) -> None:
+    """Light domain keys get icon_color synced to entity state."""
+    profiles_dir = tmp_path / "profiles"
+    profiles_dir.mkdir()
+    templates_dir = tmp_path / "templates" / "plus"
+    templates_dir.mkdir(parents=True)
+
+    defaults = {
+        "model": "stream-deck-plus",
+        "templates": {
+            "keys": [
+                {
+                    "slot": 1,
+                    "template": "IconKey.dui",
+                    "config": {
+                        "icon": "mdi:lightbulb",
+                        "label": "Light",
+                        "action": "toggle",
+                        "domain": "light",
+                        "entity": "test_light",
+                    },
+                }
+            ],
+            "touchscreen": [],
+        },
+    }
+    (profiles_dir / "defaults.yaml").write_text(yaml.dump(defaults))
+
+    key_dui = templates_dir / "IconKey.dui"
+    key_dui.mkdir()
+    (key_dui / "manifest.yaml").write_text("name: IconKey\nversion: '1.0'\n")
+
+    # Mock HA light entity
+    light = MagicMock()
+    light.state = "on"
+    state_callbacks: list = []
+    light.on_state_change = MagicMock(side_effect=lambda cb: state_callbacks.append(cb))
+
+    ha = MagicMock()
+    ha.light = MagicMock(return_value=light)
+    ha.state = MagicMock()
+    ha.state.refresh_all = AsyncMock()
+
+    key_instance = MagicMock()
+    key_instance.on_event = MagicMock(side_effect=lambda name: lambda fn: fn)
+    key_instance.request_refresh = AsyncMock()
+    mock_dui_key.return_value = key_instance
+    mock_load_package.return_value = MagicMock()
+
+    provisioner = Provisioner(
+        profiles_dir=profiles_dir,
+        templates_dir=templates_dir.parent,
+        ha=ha,
+    )
+
+    screen = MagicMock()
+    deck = MagicMock()
+    deck.screen = MagicMock(return_value=screen)
+    deck.set_screen = AsyncMock()
+
+    await provisioner.provision(deck, "LIGHT_TEST")
+
+    # Initial sync: light is "on" → white icon, normal background
+    key_instance.set.assert_any_call("icon_color", "#ffffff")
+    key_instance.set.assert_any_call("active", "#1a1a2e")
+
+    # Simulate state change to off
+    light.state = "off"
+    assert len(state_callbacks) > 0
+    await state_callbacks[0](None, None)
+    key_instance.set.assert_any_call("icon_color", "#555555")
+    key_instance.set.assert_any_call("active", "#0d0d1a")
+
+
+@patch("sdeck.provisioner.load_package")
+@patch("sdeck.provisioner.DuiKey")
+async def test_multi_action_key(
+    mock_dui_key: MagicMock,
+    mock_load_package: MagicMock,
+    tmp_path: Path,
+) -> None:
+    """Multi-action key fires all configured HA actions on press."""
+    profiles_dir = tmp_path / "profiles"
+    profiles_dir.mkdir()
+    templates_dir = tmp_path / "templates" / "plus"
+    templates_dir.mkdir(parents=True)
+
+    defaults = {
+        "model": "stream-deck-plus",
+        "templates": {
+            "keys": [
+                {
+                    "slot": 0,
+                    "template": "IconKey.dui",
+                    "config": {
+                        "icon": "mdi:power-sleep",
+                        "label": "Sleep",
+                        "actions": [
+                            {"action": "off", "domain": "light", "entity": "bedroom"},
+                            {"action": "pause", "domain": "media_player", "entity": "bedroom"},
+                        ],
+                    },
+                }
+            ],
+            "touchscreen": [],
+        },
+    }
+    (profiles_dir / "defaults.yaml").write_text(yaml.dump(defaults))
+
+    key_dui = templates_dir / "IconKey.dui"
+    key_dui.mkdir()
+    (key_dui / "manifest.yaml").write_text("name: IconKey\nversion: '1.0'\n")
+
+    # Mock HA entities
+    light = MagicMock()
+    light.state = "on"
+    light.off = AsyncMock()
+    light.on_state_change = MagicMock()
+    player = MagicMock()
+    player.pause = AsyncMock()
+
+    ha = MagicMock()
+    ha.light = MagicMock(return_value=light)
+    ha.media_player = MagicMock(return_value=player)
+    ha.state = MagicMock()
+    ha.state.refresh_all = AsyncMock()
+
+    # Track the press handler registered on the key
+    press_handlers: list = []
+    key_instance = MagicMock()
+    key_instance.on_event = MagicMock(
+        side_effect=lambda name: (lambda fn: press_handlers.append(fn) or fn)
+    )
+    key_instance.request_refresh = AsyncMock()
+    mock_dui_key.return_value = key_instance
+    mock_load_package.return_value = MagicMock()
+
+    provisioner = Provisioner(
+        profiles_dir=profiles_dir,
+        templates_dir=templates_dir.parent,
+        ha=ha,
+    )
+
+    screen = MagicMock()
+    deck = MagicMock()
+    deck.screen = MagicMock(return_value=screen)
+    deck.set_screen = AsyncMock()
+
+    await provisioner.provision(deck, "SLEEP_TEST")
+
+    # Find the multi-action handler (first handler registered on key press)
+    assert len(press_handlers) > 0
+    await press_handlers[0]()
+
+    # Both actions should have fired
+    light.off.assert_awaited_once()
+    player.pause.assert_awaited_once()

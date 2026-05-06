@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
   <rect id="bg" width="120" height="120" fill="#1a1a2e" rx="8"/>
-  <g id="icon_group" transform="translate(36, 16)"/>
-  <text id="label" x="60" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#cccccc"></text>
+  <g id="icon_group" transform="translate(36, 16)" fill="#ffffff" color="#ffffff"/>
+  <text id="label" x="60" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#ffffff"></text>
 </svg>

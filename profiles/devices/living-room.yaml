@@ -1,11 +1,93 @@
-# Living room Stream Deck +
+# Living Room Stream Deck + — Lights and Sonos
 extends: defaults
 serial: CHANGE_ME_LIVING_ROOM
+scenes:
+  - living-room-music
 
 templates:
-  touchscreen:
+  keys:
+    - slot: 0
+      template: IconKey.dui
+      config:
+        icon: "mdi:sofa"
+        label: "Living Room"
     - slot: 1
+      template: IconKey.dui
+      config:
+        icon: "mdi:lightbulb-group"
+        label: "All Lights"
+        action: toggle
+        domain: light
+        entity: living_room
+    - slot: 2
+      template: IconKey.dui
+      config:
+        icon: "mdi:television"
+        label: "TV"
+        action: select_source
+        domain: media_player
+        entity: living_room
+        action_data:
+          source: "TV"
+    - slot: 3
+      template: IconKey.dui
+      config:
+        icon: "mdi:power-sleep"
+        label: "Goodnight"
+        actions:
+          - action: "off"
+            domain: light
+            entity: living_room
+          - action: pause
+            domain: media_player
+            entity: living_room
+    - slot: 4
+      template: IconKey.dui
+      config:
+        icon: "mdi:speaker"
+        label: "Sonos"
+        action: play_pause
+        domain: media_player
+        entity: living_room
+    - slot: 5
+      template: IconKey.dui
+      config:
+        icon: "mdi:ceiling-light"
+        label: "Ceiling"
+        action: toggle
+        domain: light
+        entity: living_room_ceiling
+    - slot: 6
+      template: IconKey.dui
+      config:
+        icon: "mdi:movie-open"
+        label: "Movie"
+    - slot: 7
+      template: IconKey.dui
+      config:
+        icon: "mdi:view-dashboard"
+        label: "Dash"
+
+  touchscreen:
+    - slot: 0
+      template: AudioCard.dui
+      controller: audio
+      config:
+        media_player: living_room
+    - slot: 1
+      template: SoundCard.dui
+      controller: eq
+      config:
+        bass_entity: living_room_bass
+        treble_entity: living_room_treble
+    - slot: 2
       template: LightCard.dui
       controller: light
       config:
-        entity: living_room_lights
+        entity: living_room
+    - slot: 3
+      template: DashboardCard.dui
+      controller: dashboard
+      config:
+        screens:
+          - main

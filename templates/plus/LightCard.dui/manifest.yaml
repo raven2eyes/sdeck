@@ -1,53 +1,79 @@
 name: LightCard
 type: TouchStripCard
 version: 1
-layout: layout.svg
-description: "Light control card — brightness, color temp, toggle"
-author: raven2eyes
-license: MIT
+description: Lights controller with on/off switch, brightness and kelvin adjust
+author: Graphras.com
+license: Apache-2.0
 category: home-automation
-device:
-  - stream-deck-plus
+layout: layout.svg
 
 bindings:
-  state:
+  lights:
+    type: toggle
+    node_on: lights_on
+    node_off: lights_off
+    default: false
+
+  brightness_value_text:
     type: text
-    node: state_label
-    default: "off"
+    node: brightness_value_text
+    default: "0%"
+
   brightness:
-    type: range
-    node: brightness_bar
+    type: slider
+    node: brightness_indicator
     default: 0.0
     direction: horizontal
-  brightness_pct:
+    min_pos: 1.5
+    max_pos: 183.5
+
+  kelvin_value_text:
     type: text
-    node: brightness_text
-    default: "0%"
-  color_temp:
-    type: text
-    node: color_temp_text
-    default: ""
-  bulb_color:
-    type: color
-    node: bulb_icon
-    attribute: fill
-    default: "#555555"
+    node: kelvin_value_text
+    default: "2000K"
+
+  kelvin:
+    type: slider
+    node: kelvin_indicator
+    default: 0.0
+    direction: horizontal
+    min_pos: 1.5
+    max_pos: 183.5
 
 events:
-  - name: brightness_up
-    source: encoder_turn
-    direction: right
-  - name: brightness_down
-    source: encoder_turn
-    direction: left
   - name: toggle
     source: encoder_press_release
 
+  - name: brightness_up
+    source: encoder_turn
+    direction: right
+    accumulate: true
+    accumulate_delay: 0.1
+
+  - name: brightness_down
+    source: encoder_turn
+    direction: left
+    accumulate: true
+    accumulate_delay: 0.1
+
+  - name: kelvin_up
+    source: encoder_press_turn
+    direction: right
+    accumulate: true
+    accumulate_delay: 0.1
+    accumulate_max_steps: 10
+
+  - name: kelvin_down
+    source: encoder_press_turn
+    direction: left
+    accumulate: true
+    accumulate_delay: 0.1
+    accumulate_max_steps: 10
+
 regions:
-  touch_area:
+  card:
     x: 0
     y: 0
-    width: 200
-    height: 100
-    events:
-      - tap
+    width: 197
+    height: 98
+    events: [tap, long_press]

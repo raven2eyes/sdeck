@@ -15,6 +15,11 @@ bindings:
     node: icon_group
     size: 48
     default: "mdi:help-circle-outline"
+  icon_color:
+    type: color
+    node: icon_group
+    attribute: color
+    default: "#ffffff"
   label:
     type: text
     node: label

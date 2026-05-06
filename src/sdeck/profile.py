@@ -45,9 +45,11 @@ class HAConfig(BaseModel):
 class DeviceProfile(BaseModel):
     """A provisioning profile for a Stream Deck device."""
 
+    name: str = ""
     extends: str | None = None
     serial: str | None = None
     model: DeckModel = DeckModel.PLUS
+    scenes: list[str] = Field(default_factory=list)
     templates: TemplateSet = Field(default_factory=TemplateSet)
     ha: HAConfig = Field(default_factory=HAConfig)
 
@@ -94,14 +96,20 @@ def load_all_profiles(profiles_dir: Path) -> dict[str | None, DeviceProfile]:
     # Load defaults first
     defaults_path = profiles_dir / "defaults.yaml"
     if defaults_path.exists():
-        profiles[None] = load_profile(defaults_path, profiles_dir)
+        default_profile = load_profile(defaults_path, profiles_dir)
+        default_profile.name = "defaults"
+        profiles[None] = default_profile
 
     # Load per-device profiles
     devices_dir = profiles_dir / "devices"
     if devices_dir.exists():
         for device_file in sorted(devices_dir.glob("*.yaml")):
             profile = load_profile(device_file, profiles_dir)
+            profile.name = device_file.stem
             if profile.serial:
                 profiles[profile.serial] = profile
+            else:
+                # Scene-only profiles (no serial) — store by name for scene lookup
+                profiles[profile.name] = profile
 
     return profiles

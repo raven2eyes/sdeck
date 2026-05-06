@@ -3,19 +3,45 @@
 from __future__ import annotations
 
 import asyncio
+import ctypes
 import logging
 import os
+import platform
 from pathlib import Path
 
+# macOS: set non-exclusive HID mode BEFORE any StreamDeck/hidapi import
+# triggers hid_init(). Without this, IOKit blocks access to Stream Deck
+# devices that the system has already opened.
+if platform.system() == "Darwin":
+    try:
+        _hidapi = ctypes.cdll.LoadLibrary("/usr/local/lib/libhidapi.dylib")
+        _hidapi.hid_darwin_set_open_exclusive(0)
+    except OSError:
+        pass  # hidapi not installed — will fail later with a clear error
+
+    # Preload Homebrew cairo so cairocffi can find it.
+    # macOS SIP strips DYLD_FALLBACK_LIBRARY_PATH so we load the dylib
+    # explicitly before cairocffi's import-time dlopen() runs.
+    for _brew_lib in ("/usr/local/lib", "/opt/homebrew/lib"):
+        _cairo_path = Path(_brew_lib) / "libcairo.2.dylib"
+        if _cairo_path.exists():
+            os.environ.setdefault("DYLD_FALLBACK_LIBRARY_PATH", _brew_lib)
+            break
+
+from aiohttp import web
 from deckui import DeckManager, DeviceInfo
+from deckui.runtime.deck import Deck
 from dotenv import load_dotenv
 from haclient import HAClient
 
 # Import controllers to trigger registration
 import sdeck.controllers.audio  # noqa: F401
 import sdeck.controllers.dashboard  # noqa: F401
+import sdeck.controllers.eq  # noqa: F401
 import sdeck.controllers.light  # noqa: F401
+import sdeck.controllers.playlist  # noqa: F401
 import sdeck.controllers.timer  # noqa: F401
+from sdeck.api import create_app
 from sdeck.provisioner import Provisioner
 
 load_dotenv()
@@ -37,6 +63,7 @@ async def run() -> None:
     profiles_dir = Path(os.environ.get("PROFILES_DIR", "./profiles"))
     templates_dir = Path(os.environ.get("TEMPLATES_DIR", "./templates"))
     serial_filter = os.environ.get("STREAMDECK_SERIAL")
+    api_port = int(os.environ.get("SDECK_API_PORT", "8484"))
 
     manager = DeckManager()
 
@@ -48,7 +75,8 @@ async def run() -> None:
         )
 
         @manager.on_connect()
-        async def on_connect(deck: object, info: DeviceInfo) -> None:
+        async def on_connect(deck: Deck) -> None:
+            info = deck.info
             serial = info.serial
             if serial_filter and serial != serial_filter:
                 log.debug("Ignoring device %s (filter: %s)", serial, serial_filter)
@@ -71,6 +99,14 @@ async def run() -> None:
         log.info("Profiles: %s", profiles_dir.resolve())
         log.info("Templates: %s", templates_dir.resolve())
         log.info("Loaded %d profile(s)", len(provisioner.profiles))
+
+        # Start REST API server
+        api_app = create_app(provisioner)
+        runner = web.AppRunner(api_app)
+        await runner.setup()
+        site = web.TCPSite(runner, "0.0.0.0", api_port)
+        await site.start()
+        log.info("API server listening on port %d", api_port)
 
         async with manager:
             await manager.wait_closed()

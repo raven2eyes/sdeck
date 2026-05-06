@@ -1,26 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="200" height="100" viewBox="0 0 200 100">
   <!-- Background -->
   <rect width="200" height="100" fill="#16213e" rx="4"/>
 
-  <!-- Album art placeholder -->
-  <image id="album_art" x="4" y="4" width="52" height="52" href=""/>
+  <!-- Cover art placeholder -->
+  <rect id="cover_placeholder" x="6" y="6" width="50" height="50" rx="4" fill="#2a2a4a"/>
+  <image id="cover" x="6" y="6" width="50" height="50" href=""/>
 
   <!-- Track info -->
-  <text id="title" x="62" y="22" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#e0e0e0">No media</text>
-  <text id="artist" x="62" y="38" font-family="Arial, sans-serif" font-size="10" fill="#888888"></text>
+  <text id="title" x="62" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e0e0e0"></text>
+  <text id="artist" x="62" y="34" font-family="Arial, sans-serif" font-size="10" fill="#888888"></text>
+  <text id="album" x="62" y="46" font-family="Arial, sans-serif" font-size="9" fill="#666666"></text>
 
   <!-- State indicator -->
-  <text id="state_label" x="62" y="54" font-family="Arial, sans-serif" font-size="9" fill="#4ecca3">idle</text>
+  <text id="state" x="62" y="58" font-family="Arial, sans-serif" font-size="9" fill="#4ecca3">Stopped</text>
+
+  <!-- Spinner (loading indicator) -->
+  <g id="spinner" transform="translate(100, 50)" opacity="0">
+    <circle cx="0" cy="0" r="14" fill="none" stroke="#4ecca3" stroke-width="2.5"
+            stroke-dasharray="20 24" stroke-linecap="round"/>
+  </g>
 
   <!-- Volume bar background -->
-  <rect x="4" y="68" width="192" height="6" rx="3" fill="#2a2a4a"/>
-
+  <rect x="6" y="70" width="150" height="6" rx="3" fill="#2a2a4a"/>
   <!-- Volume bar fill -->
-  <rect id="volume_bar" x="4" y="68" width="96" height="6" rx="3" fill="#4ecca3"/>
+  <rect id="volume_bar" x="6" y="70" width="75" height="6" rx="3" fill="#dedede"/>
 
-  <!-- Volume label -->
-  <text x="4" y="90" font-family="Arial, sans-serif" font-size="9" fill="#666666">VOL</text>
+  <!-- Volume percentage text -->
+  <text id="value_text" x="162" y="76" font-family="Arial, sans-serif" font-size="10" fill="#888888">50%</text>
 
   <!-- Encoder hint -->
-  <text x="172" y="90" font-family="Arial, sans-serif" font-size="8" fill="#444444">🔊 ⏯</text>
+  <text x="6" y="92" font-family="Arial, sans-serif" font-size="8" fill="#444444">&#x1F50A; hold ⏯ · press+turn ⏮⏭</text>
 </svg>

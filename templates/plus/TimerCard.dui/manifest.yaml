@@ -1,53 +1,69 @@
 name: TimerCard
 type: TouchStripCard
 version: 1
+description: A Timer Card to set, start, pause, reset a timer
+author: Graphras.com
+license: Apache-2.0
+category: utilities
 layout: layout.svg
-description: "Timer card — start/pause/cancel with remaining time display"
-author: raven2eyes
-license: MIT
-category: productivity
-device:
-  - stream-deck-plus
 
 bindings:
-  state:
+  timer:
     type: text
-    node: state_label
-    default: "idle"
-  remaining:
-    type: text
-    node: remaining_text
-    default: "00:00"
-  progress:
-    type: range
-    node: progress_bar
-    default: 0.0
-    direction: horizontal
-  state_color:
+    node: timer
+    default: "00:30:00"
+    max_width: 190
+    overflow: ellipsis
+
+  background:
     type: color
-    node: state_indicator
-    attribute: fill
-    default: "#555555"
+    node: background
+    attribute: color
+    default: "#1c1c1c"
+
+  foreground:
+    type: color
+    node: foreground
+    attribute: color
+    default: "#dedede"
 
 events:
-  - name: start
-    source: encoder_press_release
-  - name: pause
-    source: tap
-  - name: cancel
-    source: long_press
-  - name: adjust
+  - name: decrease_duration
+    source: encoder_turn
+    direction: left
+    accumulate: true
+    accumulate_delay: 0.01
+
+  - name: decrease_duration_alt
+    source: encoder_press_turn
+    direction: left
+    accumulate: true
+    accumulate_delay: 0.01
+
+  - name: increase_duration
     source: encoder_turn
     direction: right
     accumulate: true
-    accumulate_delay: 0.3
+    accumulate_delay: 0.01
+
+  - name: increase_duration_alt
+    source: encoder_press_turn
+    direction: right
+    accumulate: true
+    accumulate_delay: 0.01   
+
+  - name: toggle
+    source: encoder_press_release
+    max_duration_ms: 300
+
+  - name: reset
+    source: encoder_hold
+    hold_ms: 350
 
 regions:
-  touch_area:
+  card:
     x: 0
     y: 0
-    width: 200
-    height: 100
-    events:
-      - tap
-      - long_press
+    width: 197
+    height: 98
+    events: []

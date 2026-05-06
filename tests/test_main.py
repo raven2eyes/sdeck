@@ -16,7 +16,7 @@ async def test_run_exits_without_credentials() -> None:
 
 @patch.dict(
     "os.environ",
-    {"HA_URL": "http://ha.local:8123", "HA_TOKEN": "test-token"},
+    {"HA_URL": "http://ha.local:8123", "HA_TOKEN": "test-token", "SDECK_API_PORT": "0"},
     clear=False,
 )
 @patch("sdeck.main.DeckManager")

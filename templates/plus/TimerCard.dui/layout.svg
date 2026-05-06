@@ -1,23 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100">
-  <!-- Background -->
-  <rect width="200" height="100" fill="#16213e" rx="4"/>
-
-  <!-- State indicator -->
-  <circle id="state_indicator" cx="20" cy="26" r="8" fill="#555555"/>
-
-  <!-- State label -->
-  <text id="state_label" x="36" y="30" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e0e0e0">idle</text>
-
-  <!-- Remaining time (big) -->
-  <text id="remaining_text" x="100" y="56" text-anchor="middle" font-family="monospace" font-size="22" font-weight="bold" fill="#4ecca3">00:00</text>
-
-  <!-- Progress bar background -->
-  <rect x="4" y="72" width="192" height="6" rx="3" fill="#2a2a4a"/>
-
-  <!-- Progress bar fill -->
-  <rect id="progress_bar" x="4" y="72" width="0" height="6" rx="3" fill="#e94560"/>
-
-  <!-- Hints -->
-  <text x="4" y="92" font-family="Arial, sans-serif" font-size="8" fill="#444444">tap: pause</text>
-  <text x="140" y="92" font-family="Arial, sans-serif" font-size="8" fill="#444444">hold: cancel</text>
+<svg id="TimerCard" xmlns="http://www.w3.org/2000/svg" width="197" height="98" font-family="ArialMT,Arial,sans-serif">
+    <rect id="background" color="#1c1c1c" x="0" y="0" width="197" height="98" fill="currentColor"/>
+    <g id="foreground" color="#dedede">
+        <g  transform="translate(98.5 49)">
+            <text id="timer" font-size="30" fill="currentColor" text-anchor="middle" dominant-baseline="middle">00:00:00</text>
+        </g>
+    </g>
 </svg>
