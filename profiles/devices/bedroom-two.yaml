@@ -1,0 +1,113 @@
+# Bedroom Two Stream Deck + — Real POC
+# Hue ceiling light + Hue Go group, Sonos speaker
+extends: defaults
+serial: WA5081LKVEE
+scenes:
+  - living-room
+  - living-room-music
+  - kitchen
+  - bedroom-one
+
+templates:
+  keys:
+    - slot: 0
+      template: IconKey.dui
+      config:
+        icon: "mdi:bed-outline"
+        label: "Bedroom 2"
+    - slot: 1
+      template: IconKey.dui
+      config:
+        icon: "mdi:string-lights"
+        label: "Lyskæde"
+        action: toggle
+        domain: switch
+        entity: lyskaede
+    - slot: 2
+      template: IconKey.dui
+      config:
+        icon: "mdi:ceiling-light"
+        label: "Ceiling"
+        action: toggle
+        domain: light
+        entity: bedroom_two_ceiling
+    - slot: 3
+      template: IconKey.dui
+      config:
+        icon: "mdi:power-sleep"
+        label: "Sleep"
+        actions:
+          - action: "off"
+            domain: light
+            entity: bedroom_two
+          - action: pause
+            domain: media_player
+            entity: bedroom_two
+    - slot: 4
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/john-mayer.png"
+        label: "John Mayer"
+        action: play_media
+        domain: media_player
+        entity: bedroom_two
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/38"
+    - slot: 5
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/beyonce.png"
+        label: "Beyoncé"
+        action: play_media
+        domain: media_player
+        entity: bedroom_two
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "SQ:0"
+    - slot: 6
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/blues.png"
+        label: "Blues"
+        action: play_media
+        domain: media_player
+        entity: bedroom_two
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/36"
+    - slot: 7
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/kvf-radio.png"
+        label: "KVF Radio"
+        action: play_media
+        domain: media_player
+        entity: bedroom_two
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/24"
+
+  touchscreen:
+    - slot: 0
+      template: AudioCard.dui
+      controller: audio
+      config:
+        media_player: bedroom_two
+    - slot: 1
+      template: SoundCard.dui
+      controller: eq
+      config:
+        bass_entity: bedroom_two_bass
+        treble_entity: bedroom_two_treble
+    - slot: 2
+      template: LightCard.dui
+      controller: light
+      config:
+        entity: bedroom_two_ceiling
+    - slot: 3
+      template: DashboardCard.dui
+      controller: dashboard
+      config:
+        screens:
+          - main

@@ -1,0 +1,84 @@
+# Kitchen Stream Deck + — Lights only
+extends: defaults
+serial: CHANGE_ME_KITCHEN
+
+templates:
+  keys:
+    - slot: 0
+      template: IconKey.dui
+      config:
+        icon: "mdi:stove"
+        label: "Kitchen"
+    - slot: 1
+      template: IconKey.dui
+      config:
+        icon: "mdi:lightbulb-group"
+        label: "All Lights"
+        action: toggle
+        domain: light
+        entity: kitchen
+    - slot: 2
+      template: IconKey.dui
+      config:
+        icon: "mdi:countertop"
+        label: "Counter"
+        action: toggle
+        domain: light
+        entity: kitchen_counter
+    - slot: 3
+      template: IconKey.dui
+      config:
+        icon: "mdi:power-sleep"
+        label: "Off"
+        action: "off"
+        domain: light
+        entity: kitchen
+    - slot: 4
+      template: IconKey.dui
+      config:
+        icon: "mdi:lightbulb"
+        label: "Bright"
+        action: "on"
+        domain: light
+        entity: kitchen
+    - slot: 5
+      template: IconKey.dui
+      config:
+        icon: "mdi:ceiling-light"
+        label: "Ceiling"
+        action: toggle
+        domain: light
+        entity: kitchen_ceiling
+    - slot: 6
+      template: IconKey.dui
+      config:
+        icon: "mdi:weather-night"
+        label: "Dim"
+    - slot: 7
+      template: IconKey.dui
+      config:
+        icon: "mdi:view-dashboard"
+        label: "Dash"
+
+  touchscreen:
+    - slot: 0
+      template: AudioCard.dui
+      controller: audio
+      config:
+        media_player: living_room
+    - slot: 1
+      template: LightCard.dui
+      controller: light
+      config:
+        entity: kitchen
+    - slot: 2
+      template: TimerCard.dui
+      controller: timer
+      config:
+        entity: sdeck_kitchen
+    - slot: 3
+      template: DashboardCard.dui
+      controller: dashboard
+      config:
+        screens:
+          - main

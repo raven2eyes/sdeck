@@ -1,0 +1,106 @@
+# Bedroom One Stream Deck + — Lights and Sonos
+extends: defaults
+serial: CHANGE_ME_BEDROOM_ONE
+
+templates:
+  keys:
+    - slot: 0
+      template: IconKey.dui
+      config:
+        icon: "mdi:bed"
+        label: "Bedroom 1"
+    - slot: 1
+      template: IconKey.dui
+      config:
+        icon: "mdi:ceiling-light"
+        label: "Ceiling"
+        action: toggle
+        domain: light
+        entity: bedroom_one_ceiling
+    - slot: 2
+      template: IconKey.dui
+      config:
+        icon: "mdi:book-open-variant"
+        label: "Reading"
+        action: "on"
+        domain: light
+        entity: bedroom_one
+    - slot: 3
+      template: IconKey.dui
+      config:
+        icon: "mdi:power-sleep"
+        label: "Sleep"
+        actions:
+          - action: "off"
+            domain: light
+            entity: bedroom_one
+          - action: pause
+            domain: media_player
+            entity: bedroom_one
+    - slot: 4
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/john-mayer.png"
+        label: "John Mayer"
+        action: play_media
+        domain: media_player
+        entity: bedroom_one
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/38"
+    - slot: 5
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/beyonce.png"
+        label: "Beyoncé"
+        action: play_media
+        domain: media_player
+        entity: bedroom_one
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "SQ:0"
+    - slot: 6
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/blues.png"
+        label: "Blues"
+        action: play_media
+        domain: media_player
+        entity: bedroom_one
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/36"
+    - slot: 7
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/kvf-radio.png"
+        label: "KVF Radio"
+        action: play_media
+        domain: media_player
+        entity: bedroom_one
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/24"
+
+  touchscreen:
+    - slot: 0
+      template: AudioCard.dui
+      controller: audio
+      config:
+        media_player: bedroom_one
+    - slot: 1
+      template: LightCard.dui
+      controller: light
+      config:
+        entity: bedroom_one_ceiling
+    - slot: 2
+      template: TimerCard.dui
+      controller: timer
+      config:
+        entity: sdeck_bedroom_one
+    - slot: 3
+      template: DashboardCard.dui
+      controller: dashboard
+      config:
+        screens:
+          - main

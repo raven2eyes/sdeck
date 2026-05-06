@@ -1,0 +1,111 @@
+# Living Room Music Scene — Sonos playlists and radio
+# Second scene for living-room: pure music control
+extends: defaults
+
+templates:
+  keys:
+    - slot: 0
+      template: IconKey.dui
+      config:
+        icon: "mdi:music"
+        label: "Music"
+    - slot: 1
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/john-mayer.png"
+        label: "John Mayer"
+        action: play_media
+        domain: media_player
+        entity: living_room
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/38"
+    - slot: 2
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/beyonce.png"
+        label: "Beyoncé"
+        action: play_media
+        domain: media_player
+        entity: living_room
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "SQ:0"
+    - slot: 3
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/blues.png"
+        label: "Blues"
+        action: play_media
+        domain: media_player
+        entity: living_room
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/36"
+    - slot: 4
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/70s-soul-classics.png"
+        label: "70's Soul"
+        action: play_media
+        domain: media_player
+        entity: living_room
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/33"
+    - slot: 5
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/feel-good-dinner.png"
+        label: "Feel Good Dinner"
+        action: play_media
+        domain: media_player
+        entity: living_room
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/35"
+    - slot: 6
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/soft-70s.png"
+        label: "Soft 70s"
+        action: play_media
+        domain: media_player
+        entity: living_room
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/37"
+    - slot: 7
+      template: PictureKey.dui
+      config:
+        icon: "assets/keys/dr-p3.png"
+        label: "DR P3"
+        action: play_media
+        domain: media_player
+        entity: living_room
+        action_data:
+          media_content_type: "favorite_item_id"
+          media_content_id: "FV:2/27"
+
+  touchscreen:
+    - slot: 0
+      template: AudioCard.dui
+      controller: audio
+      config:
+        media_player: living_room
+    - slot: 1
+      template: AudioCard.dui
+      controller: playlist
+      config:
+        media_player: living_room
+    - slot: 2
+      template: TimerCard.dui
+      controller: timer
+      config:
+        entity: sdeck_music
+    - slot: 3
+      template: DashboardCard.dui
+      controller: dashboard
+      config:
+        screens:
+          - main
