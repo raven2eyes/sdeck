@@ -22,9 +22,13 @@ templates:
       config:
         icon: "mdi:countertop"
         label: "Counter"
-        action: toggle
-        domain: light
-        entity: kitchen_counter
+        actions:
+          - action: toggle
+            domain: light
+            entity: kitchen_1
+          - action: toggle
+            domain: light
+            entity: kitchen_2
     - slot: 3
       template: IconKey.dui
       config:
@@ -38,27 +42,37 @@ templates:
       config:
         icon: "mdi:lightbulb"
         label: "Bright"
-        action: "on"
+        action: set_brightness
         domain: light
         entity: kitchen
+        action_data:
+          brightness: 255
     - slot: 5
       template: IconKey.dui
       config:
         icon: "mdi:ceiling-light"
-        label: "Ceiling"
+        label: "Dining Table"
         action: toggle
         domain: light
-        entity: kitchen_ceiling
+        entity: dining_table
     - slot: 6
       template: IconKey.dui
       config:
         icon: "mdi:weather-night"
         label: "Dim"
+        action: set_brightness
+        domain: light
+        entity: kitchen
+        action_data:
+          brightness: 102
     - slot: 7
       template: IconKey.dui
       config:
-        icon: "mdi:view-dashboard"
-        label: "Dash"
+        icon: "mdi:desk-lamp"
+        label: "Keiser Idell"
+        action: toggle
+        domain: light
+        entity: keiser_idell
 
   touchscreen:
     - slot: 0

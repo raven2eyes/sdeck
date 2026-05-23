@@ -89,11 +89,17 @@ templates:
       config:
         media_player: bedroom_one
     - slot: 1
+      template: SoundCard.dui
+      controller: eq
+      config:
+        bass_entity: bedroom_one_bass
+        treble_entity: bedroom_one_treble
+    - slot: 2
       template: LightCard.dui
       controller: light
       config:
         entity: bedroom_one_ceiling
-    - slot: 2
+    - slot: 3
       template: TimerCard.dui
       controller: timer
       config:
