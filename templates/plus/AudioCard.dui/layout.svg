@@ -8,12 +8,12 @@
   <image id="cover" x="6" y="6" width="50" height="50" href=""/>
 
   <!-- Track info -->
-  <text id="title" x="62" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e0e0e0"></text>
-  <text id="artist" x="62" y="34" font-family="Arial, sans-serif" font-size="10" fill="#888888"></text>
-  <text id="album" x="62" y="46" font-family="Arial, sans-serif" font-size="9" fill="#666666"></text>
+  <text id="title" x="62" y="20" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#e0e0e0"></text>
+  <text id="artist" x="62" y="36" font-family="Arial, sans-serif" font-size="12" fill="#888888"></text>
+  <text id="album" x="62" y="48" font-family="Arial, sans-serif" font-size="9" fill="#666666"></text>
 
   <!-- State indicator -->
-  <text id="state" x="62" y="58" font-family="Arial, sans-serif" font-size="9" fill="#4ecca3">Stopped</text>
+  <text id="state" x="62" y="60" font-family="Arial, sans-serif" font-size="11" fill="#4ecca3">Stopped</text>
 
   <!-- Spinner (loading indicator) -->
   <g id="spinner" transform="translate(100, 50)" opacity="0">
@@ -23,8 +23,8 @@
 
   <!-- Volume bar background -->
   <rect x="6" y="70" width="150" height="6" rx="3" fill="#2a2a4a"/>
-  <!-- Volume bar fill -->
-  <rect id="volume_bar" x="6" y="70" width="75" height="6" rx="3" fill="#dedede"/>
+  <!-- Volume bar fill (width=150 = full range; DeckUI scales by normalised value) -->
+  <rect id="volume_bar" x="6" y="70" width="150" height="6" rx="3" fill="#dedede"/>
 
   <!-- Volume percentage text -->
   <text id="value_text" x="162" y="76" font-family="Arial, sans-serif" font-size="10" fill="#888888">50%</text>
