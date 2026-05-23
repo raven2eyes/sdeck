@@ -56,28 +56,36 @@ class EqController(BaseController):
         @self.card.on("bass_up")
         async def _bass_up(steps: int = 1, **_kw: Any) -> None:
             b = self._bass()
-            current = float(b.state or 0)
+            current = self._safe_float(b.state)
+            if current is None:
+                return
             new_val = min(10, current + _EQ_STEP * steps)
             await b._call_service("set_value", {"value": new_val}, domain="number")
 
         @self.card.on("bass_down")
         async def _bass_down(steps: int = 1, **_kw: Any) -> None:
             b = self._bass()
-            current = float(b.state or 0)
+            current = self._safe_float(b.state)
+            if current is None:
+                return
             new_val = max(-10, current - _EQ_STEP * abs(steps))
             await b._call_service("set_value", {"value": new_val}, domain="number")
 
         @self.card.on("treble_up")
         async def _treble_up(steps: int = 1, **_kw: Any) -> None:
             t = self._treble()
-            current = float(t.state or 0)
+            current = self._safe_float(t.state)
+            if current is None:
+                return
             new_val = min(10, current + _EQ_STEP * steps)
             await t._call_service("set_value", {"value": new_val}, domain="number")
 
         @self.card.on("treble_down")
         async def _treble_down(steps: int = 1, **_kw: Any) -> None:
             t = self._treble()
-            current = float(t.state or 0)
+            current = self._safe_float(t.state)
+            if current is None:
+                return
             new_val = max(-10, current - _EQ_STEP * abs(steps))
             await t._call_service("set_value", {"value": new_val}, domain="number")
 
@@ -91,8 +99,10 @@ class EqController(BaseController):
         bass = self._bass()
         treble = self._treble()
 
-        bass_val = float(bass.state or 0)
-        treble_val = float(treble.state or 0)
+        bass_val = self._safe_float(bass.state)
+        treble_val = self._safe_float(treble.state)
+        if bass_val is None or treble_val is None:
+            return
 
         # Compute arc positions: dot follows semicircular gauge path
         bass_x, bass_y = self._arc_ratios(bass_val)
@@ -105,6 +115,14 @@ class EqController(BaseController):
         self.card.set("treble", treble_x)
         self.card.set("treble_y", treble_y)
         self.card.set("sound", True)
+
+    @staticmethod
+    def _safe_float(state: object) -> float | None:
+        """Parse entity state to float, returning None for unavailable/unknown."""
+        try:
+            return float(state)  # type: ignore[arg-type]
+        except (TypeError, ValueError):
+            return None
 
     @staticmethod
     def _arc_ratios(value: float) -> tuple[float, float]:

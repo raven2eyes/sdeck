@@ -113,6 +113,8 @@ class AudioController(BaseController):
 
     def _on_volume_change(self, _old: Any, vol: float) -> None:
         """Update volume bar and percentage text."""
+        if vol is None:
+            return
         self.card.set("volume", vol)
         self.card.set("value_text", f"{int(vol * 100)}%")
         asyncio.ensure_future(self.card.request_refresh())
